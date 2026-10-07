@@ -46,5 +46,24 @@ pipeline {
                 '''
             }
         }
+
+        stage('Deploy to Kubernetes') {
+            steps {
+                sh '''
+                    ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
+                    REGISTRY="$ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com"
+
+                    IMAGE="$REGISTRY/$ECR_REPO:$BUILD_NUMBER"
+
+                    sed "s|IMAGE_PLACEHOLDER|$IMAGE|g" \
+                    kubernetes/deployment.yaml | \
+                    kubectl apply -f -
+
+                    kubectl apply -f kubernetes/service.yaml
+
+                    kubectl rollout status deployment/itvedant-app --timeout=120s
+                '''
+            }
+        }
     }
 }

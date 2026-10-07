@@ -12,6 +12,8 @@ spec:
       labels:
         app: itvedant-app
     spec:
+      imagePullSecrets:
+        - name: ecr-secret
       containers:
         - name: itvedant-app
           image: IMAGE_PLACEHOLDER
