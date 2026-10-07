@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: itvedant-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: itvedant-app
+  template:
+    metadata:
+      labels:
+        app: itvedant-app
+    spec:
+      containers:
+        - name: itvedant-app
+          image: IMAGE_PLACEHOLDER
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 5
