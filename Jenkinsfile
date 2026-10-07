@@ -57,11 +57,11 @@ pipeline {
 
                     sed "s|IMAGE_PLACEHOLDER|$IMAGE|g" \
                     kubernetes/deployment.yaml | \
-                    kubectl apply -f -
+                    KUBECONFIG=/var/lib/jenkins/k3s.yaml kubectl apply -f -
 
-                    kubectl apply -f kubernetes/service.yaml
+                    KUBECONFIG=/var/lib/jenkins/k3s.yaml kubectl apply -f kubernetes/service.yaml
 
-                    kubectl rollout status deployment/itvedant-app --timeout=120s
+                    KUBECONFIG=/var/lib/jenkins/k3s.yaml kubectl rollout status deployment/itvedant-app --timeout=120s
                 '''
             }
         }
